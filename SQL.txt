@@ -1,0 +1,75 @@
+ALTER TABLE properties RENAME COLUMN weight TO atomic_mass;
+
+ALTER TABLE properties RENAME COLUMN melting_point TO melting_point_celsius;
+
+ALTER TABLE properties RENAME COLUMN boiling_point TO boiling_point_celsius;
+
+ALTER TABLE properties ALTER COLUMN melting_point_celsius SET NOT NULL;
+
+ALTER TABLE properties ALTER COLUMN boiling_point_celsius SET NOT NULL;
+
+ALTER TABLE properties ADD FOREIGN KEY (atomic_number) REFERENCES elements (atomic_number);
+
+---
+
+ALTER TABLE elements ALTER COLUMN name SET NOT NULL;
+
+ALTER TABLE elements ALTER COLUMN symbol SET NOT NULL;
+
+ALTER TABLE elements ADD UNIQUE (name);
+
+ALTER TABLE elements ADD UNIQUE (symbol);
+
+---
+
+CREATE TABLE types();
+
+ALTER TABLE types ADD COLUMN type_id INT PRIMARY KEY;
+
+ALTER TABLE types ADD COLUMN type VARCHAR(30) NOT NULL;
+
+INSERT INTO types VALUES (1, 'nonmetal'), (2, 'metal'), (3, 'metalloid');
+
+--- 
+
+ALTER TABLE properties ADD COLUMN type_id INT NOT NULL;
+
+ALTER TABLE properties ADD FOREIGN KEY (type_id) REFERENCES types (type_id);
+
+UPDATE properties SET type_id = 1 WHERE atomic_number = 1;
+
+UPDATE properties SET type_id = 1 WHERE atomic_number = 2;
+
+UPDATE properties SET type_id = 2 WHERE atomic_number = 3;
+
+UPDATE properties SET type_id = 2 WHERE atomic_number = 4;
+
+UPDATE properties SET type_id = 3 WHERE atomic_number = 5;
+
+UPDATE properties SET type_id = 1 WHERE atomic_number = 6;
+
+UPDATE properties SET type_id = 1 WHERE atomic_number = 7;
+
+UPDATE properties SET type_id = 1 WHERE atomic_number = 8;
+
+ALTER TABLE properties ALTER COLUMN type_id SET NOT NULL;
+
+--- 
+
+UPDATE elements SET symbol = 'He' WHERE atomic_number = 2;
+
+UPDATE elements SET symbol = 'Li' WHERE atomic_number = 3;
+
+---
+
+ALTER TABLE properties DROP COLUMN type;
+
+INSERT INTO elements VALUES (9, 'F', 'Fluorine');
+
+INSERT INTO properties VALUES (9, 18.998, -220, -188.1, 1);
+
+INSERT INTO elements VALUES (10, 'Ne', 'Neon');
+
+INSERT INTO properties VALUES (10, 20.18, -248.6, -246.1, 1);
+
+---
