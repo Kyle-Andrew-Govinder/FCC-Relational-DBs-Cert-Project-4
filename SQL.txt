@@ -32,7 +32,7 @@ INSERT INTO types VALUES (1, 'nonmetal'), (2, 'metal'), (3, 'metalloid');
 
 --- 
 
-ALTER TABLE properties ADD COLUMN type_id INT NOT NULL;
+ALTER TABLE properties ADD COLUMN type_id INT;
 
 ALTER TABLE properties ADD FOREIGN KEY (type_id) REFERENCES types (type_id);
 
@@ -73,3 +73,11 @@ INSERT INTO elements VALUES (10, 'Ne', 'Neon');
 INSERT INTO properties VALUES (10, 20.18, -248.6, -246.1, 1);
 
 ---
+
+DELETE FROM properties WHERE atomic_number=1000;
+
+DELETE FROM elements WHERE atomic_number=1000;
+
+---
+
+UPDATE properties SET atomic_mass=atomic_mass::REAL;
